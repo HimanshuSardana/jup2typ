@@ -14,6 +14,6 @@ class Parser:
                 cells.append({
                     'cell_type': cell.get('cell_type', ''),
                     'source': ''.join(cell.get('source', [])),
-                    'formatted_source': f"""```python\n{''.join(cell.get('source', []))}```""" if cell['cell_type'] == 'code' else cell.get('source', ''),
+                    'formatted_source': f"""```python\n{''.join(cell.get('source', []))}\n```""" if cell['cell_type'] == 'code' else cell.get('source', ''),
                 })
         return cells
