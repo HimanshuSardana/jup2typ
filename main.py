@@ -1,10 +1,17 @@
-from src.parser import Parser
-from src.converter import Converter
+import argparse
 import subprocess
 import json
 
+from src.parser import Parser
+from src.converter import Converter
+
 def main():
-    parser = Parser("./Untitled1.ipynb")
+    arg_parser = argparse.ArgumentParser(description="Convert Jupyter notebook to Typst and compile to PDF.")
+    arg_parser.add_argument('-p', '--path', required=True, help="Path to the input .ipynb file")
+    arg_parser.add_argument('-o', '--output', default="output.typ", help="Path to the output .typ file (default: output.typ)")
+    args = arg_parser.parse_args()
+
+    parser = Parser(args.path)
     cells = parser.parse_json()
 
     for i in cells:
@@ -13,13 +20,14 @@ def main():
     converter = Converter(cells)
     typst_source = converter.convert()
 
-
-    with open("test.typ", "w") as f:
+    with open(args.output, "w") as f:
         f.write(typst_source)
 
-    print("Conversion complete! The Typst source has been saved to test.typ")
-    subprocess.run(["typst", "compile", "test.typ"])
+    print(f"Conversion complete! The Typst source has been saved to {args.output}")
+
+    subprocess.run(["typst", "compile", args.output])
     print("Compilation complete! The PDF has been generated.")
 
 if __name__ == "__main__":
     main()
+
