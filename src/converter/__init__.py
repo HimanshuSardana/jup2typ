@@ -1,4 +1,5 @@
 import base64
+import re
 import os
 
 class Converter:
@@ -61,10 +62,11 @@ class Converter:
                 line = cell['source']
                 line = line.replace("#", "=")
 
-                if line.startswith("Question"):
-                    qno = line.split()[1].strip(":")
-                    question = line[len("Question ")+1:].strip()
-                    line = f"""#question("{qno}",[{question[1:]}])"""
+                match = re.match(r"Question\s+(\d+):\s*(.*)", line)
+                if match:
+                    qno = match.group(1)
+                    question = match.group(2)
+                    line = f"""#question("{qno}",[{question}])"""
 
                 typst_source += line + "\n"
                 curr_question += 1

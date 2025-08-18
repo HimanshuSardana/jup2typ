@@ -24,7 +24,7 @@
     #v(1mm)
   ]
 ]
-        #question("1",[ Add 2 images])
+        #question("1",[Add 2 images])
 ```python
 import matplotlib.pyplot as plt
 import cv2
@@ -48,7 +48,7 @@ plt.imshow(img)
 <matplotlib.image.AxesImage at 0x7f934b62e7d0><Figure size 640x480 with 1 Axes>
 ```
 #align(center)[#image("images/cell_1.png", width: 80%)]
-#question("2",[ Subtract 2 images])
+#question("2",[Subtract 2 images])
 ```python
 import matplotlib.pyplot as plt
 import cv2
@@ -71,7 +71,7 @@ plt.imshow(img)
 <matplotlib.image.AxesImage at 0x7f934b5558d0><Figure size 640x480 with 1 Axes>
 ```
 #align(center)[#image("images/cell_2.png", width: 80%)]
-#question("3",[ Multiply 2 images])
+#question("3",[Multiply 2 images])
 ```python
 import matplotlib.pyplot as plt
 import cv2
@@ -93,7 +93,7 @@ plt.imshow(img)
 <matplotlib.image.AxesImage at 0x7f934aec7dd0><Figure size 640x480 with 1 Axes>
 ```
 #align(center)[#image("images/cell_3.png", width: 80%)]
-#question("4",[ Divide 2 images])
+#question("4",[Divide 2 images])
 ```python
 import matplotlib.pyplot as plt
 import cv2
@@ -120,7 +120,7 @@ Clipping input data to the valid range for imshow with RGB data ([0..1] for floa
 <matplotlib.image.AxesImage at 0x7f934b486890><Figure size 640x480 with 1 Axes>
 ```
 #align(center)[#image("images/cell_4.png", width: 80%)]
-#question("5",[ AND 2 images])
+#question("5",[AND 2 images])
 ```python
 import matplotlib.pyplot as plt
 import cv2
@@ -142,7 +142,7 @@ plt.imshow(img)
 <matplotlib.image.AxesImage at 0x7f934b305250><Figure size 640x480 with 1 Axes>
 ```
 #align(center)[#image("images/cell_5.png", width: 80%)]
-#question("6",[ NOT 2 images])
+#question("6",[NOT 2 images])
 ```python
 import matplotlib.pyplot as plt
 import cv2
@@ -164,7 +164,7 @@ plt.imshow(img)
 <matplotlib.image.AxesImage at 0x7f934b3857d0><Figure size 640x480 with 1 Axes>
 ```
 #align(center)[#image("images/cell_6.png", width: 80%)]
-#question("&",[ OR 2 images])
+Question &: OR 2 images
 ```python
 import matplotlib.pyplot as plt
 import cv2
