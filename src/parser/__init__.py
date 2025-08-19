@@ -27,7 +27,6 @@ class Parser:
                     if not isinstance(output, dict):
                         continue
 
-                    # Text/plain or text output
                     if 'text' in output:
                         outputs_text.append(''.join(output.get('text', [])))
                     elif 'data' in output:

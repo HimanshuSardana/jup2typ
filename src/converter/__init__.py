@@ -6,48 +6,31 @@ class Converter:
     def __init__(self, cells, image_dir="images"):
         self.cells = cells
         self.image_dir = image_dir
+        self.template_src = "./templates/template_2.typ"
         os.makedirs(image_dir, exist_ok=True)  # ensure images folder exists
 
     def convert(self):
-        typst_source = f"""#import "@preview/showybox:2.0.4": showybox
+        template_src = ""
+        if os.path.exists(self.template_src):
+            with open(self.template_src, "r") as f:
+                template_src = f.read()
+        else:
+            raise FileNotFoundError(f"Template file not found: {self.template_src}")
 
-#let question(number, body) = context [
-  #showybox(
-    frame: (
-      border-color: blue,
-      title-color: blue,
-      body-color: white,
-    ),
-    title-style: (
-      color: white,
-      weight: "bold",
-      align: left,
-      boxed-style: (
-        radius: 4pt,
-      ),
-    ),
-    title: [
-      #smallcaps()[#text(size: 10pt, weight: "bold")[
-          == Question #number
-        ]]
-    ],
-  )[#body
-    #v(1mm)
-  ]
-]
-        """
+        typst_source = template_src
         curr_question = 1
         img_counter = 1
 
         for cell in self.cells:
             if cell['cell_type'] == "code":
-                typst_source += cell['formatted_source'] + "\n"
+                typst_source += f"""
+                #solution()[{cell['formatted_source']}]
+                """
             
                 if cell.get('outputs') and cell['outputs'].strip():
-                    typst_source += f"""=== #smallcaps()[Output]
-```txt
-{cell['outputs']}
-```\n"""
+                    typst_source += f"""#output()[```txt
+{cell['outputs'].strip()}
+                    ```]\n"""
 
                 if "images" in cell:
                     for img_b64 in cell['images']:
