@@ -48,16 +48,16 @@ class Converter:
                 if line.startswith("Title"):
                     title = line.split("Title:")[1].strip()
                     typst_source += f"#title(\"{title}\")\n"
-                    continue
 
-                match = re.match(r"Question\s+(\d+):\s*(.*)", line)
-                if match:
-                    qno = match.group(1)
-                    question = match.group(2)
-                    line = f"""#question("{qno}",[{question}])"""
+                else:
+                    match = re.match(r"Question\s+(\d+):\s*(.*)", line)
+                    if match:
+                        qno = match.group(1)
+                        question = match.group(2)
+                        line = f"""#question("{qno}",[{question}])"""
 
-                typst_source += line + "\n"
-                curr_question += 1
+                    typst_source += line + "\n"
+                    curr_question += 1
 
         return typst_source
 
