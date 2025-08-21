@@ -6,7 +6,7 @@ class Converter:
     def __init__(self, cells, image_dir="images"):
         self.cells = cells
         self.image_dir = image_dir
-        self.template_src = "./templates/template_2.typ"
+        self.template_src = "./templates/template_3.typ"
         os.makedirs(image_dir, exist_ok=True)  # ensure images folder exists
 
     def convert(self):
@@ -44,6 +44,11 @@ class Converter:
             else:
                 line = cell['source']
                 line = line.replace("#", "=")
+
+                if line.startswith("Title"):
+                    title = line.split("Title:")[1].strip()
+                    typst_source += f"#title(\"{title}\")\n"
+                    continue
 
                 match = re.match(r"Question\s+(\d+):\s*(.*)", line)
                 if match:
