@@ -9,15 +9,13 @@ def main():
     arg_parser = argparse.ArgumentParser(description="Convert Jupyter notebook to Typst and compile to PDF.")
     arg_parser.add_argument('-p', '--path', required=True, help="Path to the input .ipynb file")
     arg_parser.add_argument('-o', '--output', default="output.typ", help="Path to the output .typ file (default: output.typ)")
+    arg_parser.add_argument('-t', '--template', default=None, help="Path to the Typst template file (optional)")
     args = arg_parser.parse_args()
 
     parser = Parser(args.path)
     cells = parser.parse_json()
 
-    for i in cells:
-        print(json.dumps(i, indent=4))
-
-    converter = Converter(cells)
+    converter = Converter(cells=cells, template_src=args.template if args.template else "./templates/template_1.typ")
     typst_source = converter.convert()
 
     with open(args.output, "w") as f:

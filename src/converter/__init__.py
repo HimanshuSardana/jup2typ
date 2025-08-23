@@ -3,10 +3,10 @@ import re
 import os
 
 class Converter:
-    def __init__(self, cells, image_dir="images"):
+    def __init__(self, cells, image_dir="images", template_src="./templates/template_1.typ"):
         self.cells = cells
         self.image_dir = image_dir
-        self.template_src = "./templates/template_3.typ"
+        self.template_src = template_src
         os.makedirs(image_dir, exist_ok=True)  # ensure images folder exists
 
     def convert(self):
