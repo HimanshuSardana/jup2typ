@@ -5,11 +5,11 @@
     width: 100%,
     inset: 10pt,
     radius: 4pt,
-    fill: blue.lighten(70%),
-    stroke: 1pt + blue.darken(30%),
+    fill: blue,
+    stroke: 1pt + blue,
   )[
     #align(center + horizon)[
-      #smallcaps()[#text(size: 12pt, weight: "bold")[= #body]]
+      #smallcaps()[#text(font: "Montserrat", size: 10pt, weight: "bold", fill: white)[= #body]]
     ]
   ]
 ]
@@ -19,7 +19,7 @@
     frame: (
       border-color: blue,
       title-color: blue,
-      body-color: white,
+      body-color: blue.lighten(90%),
     ),
     title-style: (
       color: white,
@@ -30,18 +30,21 @@
       ),
     ),
     title: [
-      #smallcaps()[#text(size: 10pt, weight: "bold")[
+      #smallcaps()[#text(size: 8pt, weight: "semibold", font: "Montserrat")[
           == Question #qno
         ]]
     ],
-  )[#body
+  )[
+    #text(font: "Montserrat", size: 10pt)[
+      #body
+    ]
     #v(1mm)
   ]
 ]
 
 #let solution(content) = [
-  #block(inset: 12pt, radius: 5pt, width: 100%, stroke: (thickness: 1.3pt, dash: "dashed", paint: blue))[
-    #text( weight: "bold", size: 9pt, fill: blue)[#smallcaps()[Solution]] \
+  #block(inset: 12pt, radius: 5pt, width: 100%, stroke: (thickness: 1.3pt, dash: "dashed", paint: blue), fill: blue.lighten(90%))[
+    #text( weight: "bold", size: 9pt, fill: blue, font: "Montserrat")[#smallcaps()[Solution]] \
     #v(-2mm)
     #text( size: 10pt)[#content]
   ]
@@ -49,8 +52,9 @@
 
 #let output(content) = [
   #block(inset: 5pt, radius: 5pt, width: 100%)[
-    #text( weight: "bold", size: 9pt, fill: blue)[#smallcaps()[Output]] \
+    #text( weight: "bold", size: 9pt, fill: blue, font: "Montserrat")[#smallcaps()[Output]] \
     #v(-2mm)
     #text(size: 10pt)[#content]
   ]
 ]
+

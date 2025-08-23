@@ -3,10 +3,11 @@ import re
 import os
 
 class Converter:
-    def __init__(self, cells, image_dir="images", template_src="./templates/template_1.typ"):
+    def __init__(self, cells, image_dir="images", template_src="./templates/template_1.typ", color="blue"):
         self.cells = cells
         self.image_dir = image_dir
         self.template_src = template_src
+        self.color = color
         os.makedirs(image_dir, exist_ok=True)  # ensure images folder exists
 
     def convert(self):
@@ -18,6 +19,8 @@ class Converter:
             raise FileNotFoundError(f"Template file not found: {self.template_src}")
 
         typst_source = template_src
+        # replace blue with the specified color
+        typst_source = typst_source.replace("blue", self.color)
         curr_question = 1
         img_counter = 1
 
