@@ -1,6 +1,23 @@
 # jup2typ
 A simple script I wrote to convert Jupyter Notebooks into Typst documents. (so i could stop having to manually copy paste code snippets and outputs)
 
+## Usage
+```txt
+usage: main.py [-h] -p PATH [-o OUTPUT] [-t TEMPLATE] [-c COLOR]
+
+Convert Jupyter notebook to Typst and compile to PDF.
+
+options:
+  -h, --help            show this help message and exit
+  -p PATH, --path PATH  Path to the input .ipynb file
+  -o OUTPUT, --output OUTPUT
+                        Path to the output .typ file (default: output.typ)
+  -t TEMPLATE, --template TEMPLATE
+                        Path to the Typst template file (optional)
+  -c COLOR, --color COLOR
+                        Color for the Typst document (default: blue)
+```
+
 ## Themes
 There are currently a total of 4 themes
 
