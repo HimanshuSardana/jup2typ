@@ -1,11 +1,25 @@
 #import "@preview/showybox:2.0.4": showybox
 
-#let question(number, body) = context [
+#let title(body) = [
+  #box(
+    width: 100%,
+    inset: 10pt,
+    radius: 4pt,
+    fill: olive,
+    stroke: 1pt + olive,
+  )[
+    #align(center + horizon)[
+      #smallcaps()[#text(font: "Montserrat", size: 10pt, weight: "bold", fill: white)[= #body]]
+    ]
+  ]
+]
+
+#let question(qno, body) = [
   #showybox(
     frame: (
-      border-color: blue,
-      title-color: blue,
-      body-color: white,
+      border-color: olive,
+      title-color: olive,
+      body-color: olive.lighten(90%),
     ),
     title-style: (
       color: white,
@@ -16,176 +30,156 @@
       ),
     ),
     title: [
-      #smallcaps()[#text(size: 10pt, weight: "bold")[
-          == Question #number
+      #smallcaps()[#text(size: 8pt, weight: "semibold", font: "Montserrat")[
+          == Question #qno
         ]]
     ],
-  )[#body
+  )[
+    #text(font: "Montserrat", size: 10pt)[
+      #body
+    ]
     #v(1mm)
   ]
 ]
-        #question("1",[Add 2 images])
-```python
-import matplotlib.pyplot as plt
+
+#let solution(content) = [
+  #block(inset: 12pt, radius: 5pt, width: 100%, stroke: (thickness: 1.3pt, dash: "dashed", paint: olive), fill: olive.lighten(90%))[
+    #text( weight: "bold", size: 9pt, fill: olive, font: "Montserrat")[#smallcaps()[Solution]] \
+    #v(-2mm)
+    #text( size: 10pt)[#content]
+  ]
+]
+
+#let output(content) = [
+  #block(inset: 5pt, radius: 5pt, width: 100%)[
+    #text( weight: "bold", size: 9pt, fill: olive, font: "Montserrat")[#smallcaps()[Output]] \
+    #v(-2mm)
+    #text(size: 10pt)[#content]
+  ]
+]
+
+#title("Assignment 4")
+#question("1",[Apply the negative image transformation])
+
+                #solution()[```python
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
-img1 = cv2.imread('./img1.jpg')
-img2 = cv2.imread('./img2.jpg')
+img = cv2.imread("gray_image.jpg")
 
-img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
+# Apply negative transformation
+negative_img = np.max(img) - img
+print(np.max(img))
 
-alpha = 0.5
-beta = 1 - alpha
-img = cv2.addWeighted(img1, alpha, img2, beta, 0)
-
-cv2.imwrite('blended_image.jpg', img)
-# cv2.imshow('Blended Image', img)
-plt.imshow(img)
-```
-=== #smallcaps()[Output]
-```txt
-<matplotlib.image.AxesImage at 0x7f934b62e7d0><Figure size 640x480 with 1 Axes>
-```
+cv2.imwrite("negative.jpg", negative_img)
+plt.imshow(negative_img)
+```]
+                #output()[```txt
+255
+<matplotlib.image.AxesImage at 0x7f6b80433bd0><Figure size 640x480 with 1 Axes>
+                    ```]
 #align(center)[#image("images/cell_1.png", width: 80%)]
-#question("2",[Subtract 2 images])
-```python
-import matplotlib.pyplot as plt
+#question("2",[Apply the logarithmic image transformation])
+
+                #solution()[```python
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
-img1 = cv2.imread('./img1.jpg')
-img2 = cv2.imread('./img2.jpg')
+img = cv2.imread("gray_image.jpg")
 
-img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
+img = img.astype(np.float32)
 
-img = cv2.subtract(img1, img2)
+c = 255 / np.log(1 + np.max(img))
+log_img = np.uint8(c * np.log1p(img))
 
-cv2.imwrite('blended_image.jpg', img)
-# cv2.imshow('Blended Image', img)
-plt.imshow(img)
-
-```
-=== #smallcaps()[Output]
-```txt
-<matplotlib.image.AxesImage at 0x7f934b5558d0><Figure size 640x480 with 1 Axes>
-```
+cv2.imwrite("log_img.jpg", log_img)
+plt.imshow(log_img)
+```]
+                #output()[```txt
+<matplotlib.image.AxesImage at 0x7f6b805ba210><Figure size 640x480 with 1 Axes>
+                    ```]
 #align(center)[#image("images/cell_2.png", width: 80%)]
-#question("3",[Multiply 2 images])
-```python
-import matplotlib.pyplot as plt
-import cv2
+#question("3",[Make a custom 3x3 image and repeatedly apply the log transform])
+
+                #solution()[```python
 import numpy as np
+import cv2
+import matplotlib.pyplot as plt
 
-img1 = cv2.imread('./img1.jpg')
-img2 = cv2.imread('./img2.jpg')
+new_img = (np.random.rand(3, 3) * 255).astype(np.uint8)
 
-img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
 
-img = cv2.multiply(img1, img2, scale=1.0/255.0)
+fig, axes = plt.subplots(1, 11, figsize=(2.2*(11), 4))
 
-cv2.imwrite('blended_image.jpg', img)
-# cv2.imshow('Blended Image', img)
-plt.imshow(img)
-```
-=== #smallcaps()[Output]
-```txt
-<matplotlib.image.AxesImage at 0x7f934aec7dd0><Figure size 640x480 with 1 Axes>
-```
+axes[0].imshow(new_img)
+axes[0].set_title("Original")
+axes[0].axis("off")
+
+for i in range(10):
+    c = 255 / np.log(1 + float(np.max(new_img)))
+    log_img = np.uint8(c * np.log1p(new_img))
+
+    axes[i+1].imshow(log_img)
+    axes[i+1].set_title(f"Transformation {i+1}")
+    axes[i+1].axis("off")
+
+    new_img = log_img
+
+plt.tight_layout()
+plt.show()
+```]
+                #output()[```txt
+<Figure size 2420x400 with 11 Axes>
+                    ```]
 #align(center)[#image("images/cell_3.png", width: 80%)]
-#question("4",[Divide 2 images])
-```python
-import matplotlib.pyplot as plt
+#question("3",[Apply the Power Law (Gamma Correction) image transformation])
+
+                #solution()[```python
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
-img1 = cv2.imread('./img1.jpg')
-img2 = cv2.imread('./img2.jpg')
+img = cv2.imread("gray_image.jpg")
 
-img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
+gamma = 0.3
+c = 1.0
 
-img = np.array(img1, dtype=np.float32)/np.array(img2, dtype=np.float32)
+norm_img = img / 255
 
-cv2.imwrite('blended_image.jpg', img)
-# cv2.imshow('Blended Image', img)
-plt.imshow(img)
-```
-=== #smallcaps()[Output]
-```txt
-/tmp/ipykernel_3113/2660822262.py:10: RuntimeWarning: divide by zero encountered in divide
-  img = np.array(img1, dtype=np.float32)/np.array(img2, dtype=np.float32)
-/tmp/ipykernel_3113/2660822262.py:10: RuntimeWarning: invalid value encountered in divide
-  img = np.array(img1, dtype=np.float32)/np.array(img2, dtype=np.float32)
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..255.0].
-<matplotlib.image.AxesImage at 0x7f934b486890><Figure size 640x480 with 1 Axes>
-```
+power_log_img = c * np.power(norm_img, gamma)
+plt.imshow(power_log_img)
+```]
+                #output()[```txt
+<matplotlib.image.AxesImage at 0x7f6b84534590><Figure size 640x480 with 1 Axes>
+                    ```]
 #align(center)[#image("images/cell_4.png", width: 80%)]
-#question("5",[AND 2 images])
-```python
-import matplotlib.pyplot as plt
+#question("5",[Apply the Contrast Stretching Transformation])
+
+                #solution()[```python
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
-img1 = cv2.imread('./img1.jpg')
-img2 = cv2.imread('./img2.jpg')
+img = cv2.imread("img1.jpg").astype(np.float32)
 
-img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
+r1, r2 = 80, 120
+s1, s2 = 0, 100
 
-img = np.bitwise_and(np.array(img1, dtype=np.uint8), np.array(img2, dtype=np.uint8))
+mask = (img >= r1) & (img <= r2)
 
-cv2.imwrite('blended_image.jpg', img)
-# cv2.imshow('Blended Image', img)
+img[mask] = ((img[mask] - 1) / (r2 - r1)) * (s2 - s1) + s1
+img = np.clip(img, 0, 255).astype(np.float32)
 plt.imshow(img)
-```
-=== #smallcaps()[Output]
-```txt
-<matplotlib.image.AxesImage at 0x7f934b305250><Figure size 640x480 with 1 Axes>
-```
+```]
+                #output()[```txt
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..255.0].
+<matplotlib.image.AxesImage at 0x7f6b803269d0><Figure size 640x480 with 1 Axes>
+                    ```]
 #align(center)[#image("images/cell_5.png", width: 80%)]
-#question("6",[NOT 2 images])
-```python
-import matplotlib.pyplot as plt
-import cv2
-import numpy as np
 
-img1 = cv2.imread('./img1.jpg')
-img2 = cv2.imread('./img2.jpg')
+                #solution()[```python
 
-img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
-
-img = np.bitwise_not(np.array(img1, dtype=np.uint8), np.array(img2, dtype=np.uint8))
-
-cv2.imwrite('blended_image.jpg', img)
-# cv2.imshow('Blended Image', img)
-plt.imshow(img)
-```
-=== #smallcaps()[Output]
-```txt
-<matplotlib.image.AxesImage at 0x7f934b3857d0><Figure size 640x480 with 1 Axes>
-```
-#align(center)[#image("images/cell_6.png", width: 80%)]
-Question &: OR 2 images
-```python
-import matplotlib.pyplot as plt
-import cv2
-import numpy as np
-
-img1 = cv2.imread('./img1.jpg')
-img2 = cv2.imread('./img2.jpg')
-
-img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
-
-img = np.bitwise_or(np.array(img1, dtype=np.uint8), np.array(img2, dtype=np.uint8))
-
-cv2.imwrite('blended_image.jpg', img)
-# cv2.imshow('Blended Image', img)
-plt.imshow(img)
-```
-=== #smallcaps()[Output]
-```txt
-<matplotlib.image.AxesImage at 0x7f934b1f7ad0><Figure size 640x480 with 1 Axes>
-```
-#align(center)[#image("images/cell_7.png", width: 80%)]
-```python
-
-```
+```]
+                

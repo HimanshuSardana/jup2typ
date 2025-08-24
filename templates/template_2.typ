@@ -1,9 +1,9 @@
 #show raw: set text(font: "Iosevka NF")
 
 #let title(content) = [
-  #box(width: 100%, fill: blue.lighten(80%), inset: 10pt)[
+  #box(width: 100%, fill: blue, inset: 10pt)[
     #align(center + horizon)[
-      #text(font: "Montserrat", weight: "bold", size: 12pt, fill: blue)[#content]
+      #text(font: "Montserrat", weight: "bold", size: 12pt, fill: white)[#content]
     ]
   ]
 ]
