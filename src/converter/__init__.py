@@ -4,18 +4,32 @@ import re
 from typing import List, Dict, Any
 
 class Converter:
-    cells: List[Dict[str, Any]]
-    image_dir: str
-    template_src: str
-    color: str
+    """
+    Converter class for transforming notebook cell data into Typst source format.
+
+    Attributes:
+        cells (list[dict]): List of cell dictionaries containing notebook data.
+        image_dir (str): Directory to save extracted images.
+        template_src (str): Path to the Typst template file.
+        color (str): Color theme to use in the Typst output.
+    """
 
     def __init__(
         self,
-        cells: List[Dict[str, Any]],
+        cells: list[dict],
         image_dir: str = "images",
         template_src: str = "./templates/template_1.typ",
         color: str = "blue"
     ):
+        """
+        Initialize the Converter.
+
+        Args:
+            cells (list[dict]): List of notebook cell data.
+            image_dir (str, optional): Directory for saving images. Defaults to "images".
+            template_src (str, optional): Path to Typst template. Defaults to "./templates/template_1.typ".
+            color (str, optional): Color theme for Typst output. Defaults to "blue".
+        """
         self.cells = cells
         self.image_dir = image_dir
         self.template_src = template_src
@@ -23,6 +37,15 @@ class Converter:
         os.makedirs(self.image_dir, exist_ok=True)
 
     def convert(self) -> str:
+        """
+        Convert the notebook cells to Typst source format.
+
+        Returns:
+            str: The generated Typst source as a string.
+
+        Raises:
+            FileNotFoundError: If the template file does not exist.
+        """
         if not os.path.exists(self.template_src):
             raise FileNotFoundError(f"Template file not found: {self.template_src}")
 
@@ -71,4 +94,3 @@ class Converter:
                     curr_question += 1
 
         return typst_source
-

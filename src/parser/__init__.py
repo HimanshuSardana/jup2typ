@@ -2,10 +2,30 @@ import json
 import base64
 
 class Parser:
+    """
+    Parser class for reading and extracting information from Jupyter notebook (.ipynb) files.
+
+    Attributes:
+        path (str): Path to the notebook file.
+    """
+
     def __init__(self, path: str):
+        """
+        Initialize the Parser with the path to the notebook file.
+
+        Args:
+            path (str): Path to the .ipynb file.
+        """
         self.path = path
 
-    def parse_json(self):
+    def parse_json(self) -> list[dict]:
+        """
+        Parse the Jupyter notebook JSON file and extract cell information.
+
+        Returns:
+            list[dict]: A list of dictionaries, each representing a cell with its type, source,
+                        formatted source, outputs, and optionally images (for code cells with image outputs).
+        """
         cells = []
         with open(self.path, 'r') as file:
             data = json.load(file)
@@ -42,4 +62,3 @@ class Parser:
 
                 cells.append(cell_data)
         return cells
-
