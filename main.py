@@ -1,4 +1,5 @@
 import argparse
+import sys
 import subprocess
 from src.parser import Parser
 from src.converter import Converter
@@ -19,16 +20,37 @@ def main():
         -i, --interactive: Enable interactive mode (default: False)
     """
     arg_parser = argparse.ArgumentParser(description="Convert Jupyter notebook to Typst and compile to PDF.")
-    _ = arg_parser.add_argument('-p', '--path', required=True, help="Path to the input .ipynb file")
-    _ = arg_parser.add_argument('-o', '--output', default="output.typ", help="Path to the output .typ file (default: output.typ)")
-    _ = arg_parser.add_argument('-t', '--template', default=None, help="Path to the Typst template file (optional)")
-    _ = arg_parser.add_argument('-c', '--color', default="blue", help="Color for the Typst document (default: blue)")
-    _ = arg_parser.add_argument('-i', '--interactive', default=False, action='store_true', help="Enable interactive mode (default: False)")
+    arg_parser.add_argument('-p', '--path', help="Path to the input .ipynb file")
+    arg_parser.add_argument('-o', '--output', default="output.typ", help="Path to the output .typ file (default: output.typ)")
+    arg_parser.add_argument('-t', '--template', default=None, help="Path to the Typst template file (optional)")
+    arg_parser.add_argument('-c', '--color', default="blue", help="Color for the Typst document (default: blue)")
+    arg_parser.add_argument('-i', '--interactive', action='store_true', help="Enable interactive mode (default: False)")
+
     args = arg_parser.parse_args()
 
+    if not args.interactive and not args.path:
+        arg_parser.error("--path is required unless --interactive is specified.")
+
     if args.interactive:
-        print("Interactive mode is not implemented in this version.")
-        return
+        template = input("Enter the path to the Typst template (or press Enter to use default): ")
+        if template.strip() == "":
+            template = "./templates/template_4.typ"
+        args.template = template
+        path = input("Enter the path to the Jupyter notebook (.ipynb): ")
+        output = input("Enter the desired output Typst file name (default is output.typ): ")
+        if output.strip() == "":
+            output = "output.typ"
+        if path.strip() == "":
+            print("Path to the Jupyter notebook is required in interactive mode.")
+            sys.exit(1)
+        args.path = path
+        args.output = output
+        color = input("Enter the color for the Typst document (default is blue): ")
+        if color.strip() == "":
+            color = "blue"
+        args.color = color
+
+    print(f"Converting {args.path} to {args.output} with color {args.color}")
 
     parser = Parser(args.path)
     cells = parser.parse_json()
