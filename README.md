@@ -1,7 +1,9 @@
 # jup2typ
+
 A simple script I wrote to convert Jupyter Notebooks into Typst documents. (so i could stop having to manually copy paste code snippets and outputs)
 
 ## Usage
+
 ```txt
 usage: main.py [-h] -p PATH [-o OUTPUT] [-t TEMPLATE] [-c COLOR]
 
@@ -19,10 +21,11 @@ options:
 ```
 
 ## Themes
+
 There are currently a total of 4 themes
 
 The script turns a plain Jupyter Notebook  
-![Default Notebook](assets/notebook.png) 
+![Default Notebook](assets/notebook.png)
 
 into a Typst document with one of the following themes:
 
@@ -55,7 +58,7 @@ into a Typst document with one of the following themes:
 </details>
 
 ### TODOs
+
 - [x] Add templates
 - [ ] Add title page option
-- [ ] Add interactive mode
-
+- [x] Add interactive mode
